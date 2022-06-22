@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bulletinboard-ads-pod
+  labels:
+    app: ads
+    component: bulletinboard-pod
+spec:
+  containers:
+  - name: bulletinboard-ads
+    image: [IMAGE_NAME]
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 8080
+    env:
+    - name: SPRING_DATASOURCE_URL
+      value: jdbc:postgresql://postgres-ads:5432/postgres
+    - name: SPRING_DATASOURCE_USERNAME
+      value: postgres
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: postgrespassword
+    - name: REVIEWS_HOST
+      value: http://localhost:9090
+    - name: REVIEWS_HOST_INTERNAL
+      value: http://reviews-service:9090
+  initContainers:
+    - name: check-db-ready
+      image: postgres:9.6-alpine
+      command: ['sh', '-c',
+        'until pg_isready -h postgres-ads -p 5432 -U postgres;
+        do echo waiting for database; sleep 2; done;']
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ads-service
+spec:
+  selector:
+    app: ads
+    component: bulletinboard-pod
+  ports:
+  - port: 8080
+    targetPort: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-ads-pod
+  labels:
+    app: ads
+    component: postgres
+spec:
+  containers:
+  - name: postgres
+    image: postgres:9.6-alpine
+    ports:
+    - containerPort: 5432
+    volumeMounts:
+    - name: storage
+      mountPath: /data/db
+    env:
+    - name: POSTGRES_PASSWORD
+      value: postgrespassword
+  volumes:
+    - name: storage
+      persistentVolumeClaim:
+        claimName: postgres-ads-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-ads
+spec:
+  selector:
+    app: ads
+    component: postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-ads-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
