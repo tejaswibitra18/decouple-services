@@ -5,6 +5,9 @@ You can interact with the service using a REST client like Postman or the GUI.
 
 **Note:** Reviews refer to the _users_ that advertize things, _not_ the advertised things.
 
+## Ad-Blocker
+**If the UI does not load, please make sure your ad-blocker is not accidentially blocking parts of the application ;-)**
+
 ## How to work locally
 ### Execute tests
 The tests can be executed with maven: `mvn verify`
