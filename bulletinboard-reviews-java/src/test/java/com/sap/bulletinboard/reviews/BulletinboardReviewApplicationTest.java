@@ -40,15 +40,15 @@ public class BulletinboardReviewApplicationTest {
     @Test
     public void will_response_one_review_when_have_one() throws JSONException {
         given_review_exists("{" +
-                "    \"reviewee_email\": \"john.doe@some.org\"," +
-                "    \"reviewer_email\": \"frank.foe@other.org\"," +
+                "    \"revieweeEmail\": \"john.doe@some.org\"," +
+                "    \"reviewerEmail\": \"frank.foe@other.org\"," +
                 "    \"rating\": 0," +
                 "    \"comment\": \"d'oh\"" +
                 "}");
 
         then_I_will_get_reviews("[{" +
-                "    \"reviewee_email\": \"john.doe@some.org\"," +
-                "    \"reviewer_email\": \"frank.foe@other.org\"," +
+                "    \"revieweeEmail\": \"john.doe@some.org\"," +
+                "    \"reviewerEmail\": \"frank.foe@other.org\"," +
                 "    \"rating\": 0," +
                 "    \"comment\": \"d'oh\"" +
                 "}]");
@@ -57,23 +57,23 @@ public class BulletinboardReviewApplicationTest {
     @Test
     public void will_response_conflict_when_add_review_already_exist_from_same_reviewer() throws JSONException {
         given_review_exists("{" +
-                "    \"reviewee_email\": \"john.doe@some.org\"," +
-                "    \"reviewer_email\": \"frank.foe@other.org\"," +
+                "    \"revieweeEmail\": \"john.doe@some.org\"," +
+                "    \"reviewerEmail\": \"frank.foe@other.org\"," +
                 "    \"rating\": 0," +
                 "    \"comment\": \"original review\"" +
                 "}");
 
         ResponseEntity<String> response = when_I_create_a_review("{" +
-                "    \"reviewee_email\": \"john.doe@some.org\"," +
-                "    \"reviewer_email\": \"frank.foe@other.org\"," +
+                "    \"revieweeEmail\": \"john.doe@some.org\"," +
+                "    \"reviewerEmail\": \"frank.foe@other.org\"," +
                 "    \"rating\": 1," +
                 "    \"comment\": \"still not good\"" +
                 "}");
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
         then_I_will_get_reviews("[{" +
-                "    \"reviewee_email\": \"john.doe@some.org\"," +
-                "    \"reviewer_email\": \"frank.foe@other.org\"," +
+                "    \"revieweeEmail\": \"john.doe@some.org\"," +
+                "    \"reviewerEmail\": \"frank.foe@other.org\"," +
                 "    \"rating\": 0," +
                 "    \"comment\": \"original review\"" +
                 "}]");
@@ -82,22 +82,22 @@ public class BulletinboardReviewApplicationTest {
     @Test
     public void will_response_reviews_from_a_specific_reviewee() throws JSONException {
         given_review_exists("{" +
-                "    \"reviewee_email\": \"john.doe@some.org\"," +
-                "    \"reviewer_email\": \"frank.foe@other.org\"," +
+                "    \"revieweeEmail\": \"john.doe@some.org\"," +
+                "    \"reviewerEmail\": \"frank.foe@other.org\"," +
                 "    \"rating\": 0," +
                 "    \"comment\": \"review for john\"" +
                 "}");
         given_review_exists("{" +
-                "    \"reviewee_email\": \"hebe.eddy@some.org\"," +
-                "    \"reviewer_email\": \"georges.gray@another.org\"," +
+                "    \"revieweeEmail\": \"hebe.eddy@some.org\"," +
+                "    \"reviewerEmail\": \"georges.gray@another.org\"," +
                 "    \"rating\": 1," +
                 "    \"comment\": \"review for hebe\"" +
                 "}");
 
         then_I_will_get_reviews_for("john.doe@some.org",
                 "[{" +
-                "    \"reviewee_email\": \"john.doe@some.org\"," +
-                "    \"reviewer_email\": \"frank.foe@other.org\"," +
+                "    \"revieweeEmail\": \"john.doe@some.org\"," +
+                "    \"reviewerEmail\": \"frank.foe@other.org\"," +
                 "    \"rating\": 0," +
                 "    \"comment\": \"review for john\"" +
                 "}]");
@@ -106,19 +106,19 @@ public class BulletinboardReviewApplicationTest {
     @Test
     public void should_response_average_rating_for_specific_reviewee() throws JSONException {
         given_review_exists("{" +
-                "    \"reviewee_email\": \"john.doe@some.org\"," +
-                "    \"reviewer_email\": \"frank.foe@other.org\"," +
+                "    \"revieweeEmail\": \"john.doe@some.org\"," +
+                "    \"reviewerEmail\": \"frank.foe@other.org\"," +
                 "    \"rating\": 0," +
                 "    \"comment\": \"review for john\"" +
                 "}");
         given_review_exists("{" +
-                "    \"reviewee_email\": \"john.doe@some.org\"," +
-                "    \"reviewer_email\": \"georges.gray@another.org\"," +
+                "    \"revieweeEmail\": \"john.doe@some.org\"," +
+                "    \"reviewerEmail\": \"georges.gray@another.org\"," +
                 "    \"rating\": 5," +
                 "    \"comment\": \"review for john\"" +
                 "}");
 
-        JSONAssert.assertEquals("{\"average_rating\": 2.5}", getRating("john.doe@some.org"), true);
+        JSONAssert.assertEquals("{\"averageRating\": 2.5}", getRating("john.doe@some.org"), true);
     }
 
     private void then_I_will_get_reviews(String expectedJson) throws JSONException {
