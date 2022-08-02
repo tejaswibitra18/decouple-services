@@ -37,7 +37,6 @@ export default function AdsOverview (props) {
 
   useEffect(async () => {
     const ads = await props.client.getAll()
-    console.log(ads)
     setState(ads)
   }, [])
 
