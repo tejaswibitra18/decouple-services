@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AverageRating {
     private Double averageRating;
     
-    @JsonProperty("average_rating")
+    @JsonProperty("averageRating")
     public Double getAverageRating() {
         return averageRating;
     }
 
-    @JsonProperty("average_rating")
+    @JsonProperty("averageRating")
     public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
     }

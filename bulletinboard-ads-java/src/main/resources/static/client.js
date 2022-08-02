@@ -4,7 +4,6 @@ export default function Client () {
   this.getAll = async () => {
     const response = await fetch('./api/v1/ads')
     return (response.status === 200)
-    // REVISE: Where does this value property come from?
       ? { ads: (await response.json()).value, message: '' }
       : { ads: [], message: await response.text() }
   }
