@@ -40,7 +40,7 @@ The following endpoints are supported and tested (remember to set the `applicati
   Response: `200 OK`
   Response Body:
   ```
-    { "average_rating": <number> }
+    { "averageRating": <number> }
   ```
 
   **Note:** `<number>` may be zero, if there are no reviews for this user. The endpoint doesn't return 404 in this case, because the cases of "user not existing" and "user doesn't have any reviews yet" cannot be distinguished.
@@ -50,8 +50,8 @@ The following endpoints are supported and tested (remember to set the `applicati
   ```
     [
         {
-            "reviewee_email": <text>, 
-            "reviewer_email": <text>, 
+            "revieweeEmail": <text>, 
+            "reviewerEmail": <text>, 
             "rating": <integer>, 
             "comment": <text>
         },
@@ -62,8 +62,8 @@ The following endpoints are supported and tested (remember to set the `applicati
   Request Body:
   ```
     {
-        "reviewee_email": <text>, 
-        "reviewer_email": <text>, 
+        "revieweeEmail": <text>, 
+        "reviewerEmail": <text>, 
         "rating": <integer>, 
         "comment": <text>
     }
