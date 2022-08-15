@@ -1,17 +1,12 @@
-#!/bin/sh -e
+#!/bin/sh
 
-set +e; existing_db_container_name=$(docker ps -a -f name=postgres-bulletinboard-ads | grep postgres-bulletinboard-ads); set -e
-if [ -z "$existing_db_container_name" ]
-then
-    echo "DB container doesn't exist, creating"
-    docker create -p 5432:5432 --name postgres-bulletinboard-ads -e POSTGRES_HOST_AUTH_METHOD=trust postgres:9.6-alpine
-fi
+docker volume create bb_ads_local
 
-is_db_container_running=`docker inspect -f '{{.State.Running}}' postgres-bulletinboard-ads`
-if [ $is_db_container_running = "false" ]
-then
-    echo "Starting DB container"
-    docker start postgres-bulletinboard-ads
-else
-    echo "DB container already running"
-fi
+docker run \
+      --rm \
+      --platform linux/amd64 \
+      -e POSTGRES_HOST_AUTH_METHOD=trust \
+      -v bb_ads_local:/var/lib/postgresql/data \
+      --name postgres-bulletinboard-ads \
+      -p 5432:5432 \
+      postgres:12-alpine

@@ -18,6 +18,8 @@ The service needs a database to store its data.
 
 The script `start-db.sh` can be used to start a local database (using Docker).
 
+In order to reset the database state (schema & data), run `docker volume rm bb_ads_local`
+
 Afterwards run `mvn spring-boot:run` to start the service.
 The service will listen on port 8080.
 
