@@ -70,4 +70,4 @@ metadata:
   name: reviews-cert
   namespace: default
 spec:
-  commonName: rws.ingress.cnb2.tt.shoot.canary.k8s-hana.ondemand.com
+  commonName: rws.ingress.<CLUSTER>.<PROJECT>.shoot.canary.k8s-hana.ondemand.com
