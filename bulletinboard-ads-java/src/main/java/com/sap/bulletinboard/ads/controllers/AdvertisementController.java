@@ -148,8 +148,8 @@ public class AdvertisementController {
         dto.contact = ad.getContact();
         Double averageRating = reviewsServiceClient.getAverageRating(dto.contact);
         if (averageRating == null) {
-            averageRating = 0d;
-            logger.info("User does not have a rating yet, defaulting to 0 (=untrusted)");
+            averageRating = 1d;
+            logger.info("User does not have a rating yet, defaulting to 1 (=untrusted)");
         }
         dto.averageContactRating = averageRating;
         dto.price = ad.getPrice();
