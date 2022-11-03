@@ -2,7 +2,7 @@
 applications:
 - name: bulletinboard-reviews
   memory: 800MB
-  path: target/bulletinboard-reviews-spring-boot.jar
+  path: target/bulletinboard-reviews.jar
   routes:
     - route: 'bulletinboard-reviews-[YOUR-I/D-Number].[DOMAIN]'
   buildpacks:
