@@ -26,10 +26,10 @@ The service will listen on port 8080.
 ## A word on cloud readiness
 
 ### Cloud Foundry
-To speed a up the configuration for a deployment in Cloud Foundry a [manifest.yaml](manifest.yaml) with placeholders is provided.
+To speed a up the configuration for a deployment in Cloud Foundry a [manifest.yml](manifest.yml) with placeholders is provided.
 
 ### Kubernetes
-For a deployment of the service in Kubernetes a pre-configured yaml-file ([k8s-minimal.yaml](k8s-minimal.yaml)) with placeholders is already part of the repository.
+For a deployment of the service in Kubernetes [pre-configured yml-files](.k8s) with placeholders are already part of the repository.
 Along with a basic [Dockerfile](Dockerfile).
 
 ## Interact with the application
