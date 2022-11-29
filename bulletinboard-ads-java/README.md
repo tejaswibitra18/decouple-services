@@ -48,8 +48,6 @@ The following endpoints are supported and tested (remember to set the `applicati
             "contact": "<text>",
             "contactRatingState": <text>, //correlates to the average rating from the reviews service
             "currency": <text>,
-            "category": <text>,
-            "purchasedOn": <date>,
             "metadata": {
                 "createdAt": <date>,
                 "modifiedAt": <date>,
@@ -70,8 +68,6 @@ The following endpoints are supported and tested (remember to set the `applicati
         "contact": "<text>",
         "contactRatingState": <text>, //correlates to the average rating from the reviews service
         "currency": <text>,
-        "category": <text>,
-        "purchasedOn": <date>,
         "metadata": {
             "createdAt": <date>,
             "modifiedAt": <date>,
@@ -91,9 +87,7 @@ The following endpoints are supported and tested (remember to set the `applicati
         "title": <text>,
         "currency": <text>,
         "price": <number>,
-        "contact": <text>,
-        "category": <text>,     //optional
-        "purchasedOn": <date>   //optional
+        "contact": <text>
     }
 ```
 - `PUT /api/v1/ads/:id`: update an ad
@@ -104,9 +98,7 @@ The following endpoints are supported and tested (remember to set the `applicati
         "title": <text>,
         "currency": <text>,
         "price": <number>,
-        "contact": <text>,
-        "category": <text>,   //optional
-        "purchasedOn": <date> //optional
+        "contact": <text>
     }
 ```
   Response: `201 Created`

@@ -1,7 +1,6 @@
 package com.sap.bulletinboard.ads.controllers.dto;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -18,8 +17,6 @@ public class AdvertisementDto {
     public double averageContactRating;
     @NotBlank
     public String currency;
-    public String category;
-    public Instant purchasedOn;
     public MetaData metadata = new MetaData();
     public String reviewsUrl;
 

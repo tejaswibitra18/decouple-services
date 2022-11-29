@@ -1,6 +1,5 @@
 package com.sap.bulletinboard.ads.models;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,17 +106,6 @@ public class AdvertisementRepositoryTest {
 
         Advertisement foundEntity = repo.findByTitle(title).get(0);
         assertThat(foundEntity.getTitle(), is(title));
-    }
-
-    @Test
-    public void shouldFindByCategory() {
-        String category = "Find me";
-
-        entity.setCategory(category);
-        repo.save(entity);
-
-        Advertisement foundEntity = repo.findByCategory(category).get(0);
-        assertThat(foundEntity.getCategory(), is(category));
     }
 
     @Test

@@ -47,7 +47,6 @@ public class AdvertisementControllerTest {
     private static final String LOCATION = "Location";
     private static final String SOME_TITLE = "MyNewAdvertisement";
     private static final String SOME_OTHER_TITLE = "MyOldAdvertisement";
-    private static final String SOME_CATEGORY = "MyNewAdvertisementCategory";
 
     @Autowired
     private AdvertisementRepository repo;
@@ -86,15 +85,6 @@ public class AdvertisementControllerTest {
 
         mockMvc.perform(buildGetRequest("")).andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON)).andExpect(jsonPath("$.value", hasSize(3)));
-    }
-
-    @Test
-    public void read_AllByCategory() throws Exception {
-        mockMvc.perform(buildPostRequest(SOME_TITLE, SOME_CATEGORY)).andExpect(status().isCreated());
-
-        mockMvc.perform(buildGetRequest("", SOME_CATEGORY)).andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON))
-                .andExpect(jsonPath("$.value[0].category", is(SOME_CATEGORY)));
     }
 
     @Test
@@ -249,11 +239,7 @@ public class AdvertisementControllerTest {
     }
 
     private MockHttpServletRequestBuilder buildPostRequest(String adsTitle) throws Exception {
-        return buildPostRequest(adsTitle, null);
-    }
-
-    private MockHttpServletRequestBuilder buildPostRequest(String adsTitle, String category) throws Exception {
-        AdvertisementDto advertisement = createAdvertisement(adsTitle, category);
+        AdvertisementDto advertisement = createAdvertisement(adsTitle);
         return post(AdvertisementController.PATH).content(toJson(advertisement)).contentType(APPLICATION_JSON);
     }
 
@@ -264,11 +250,7 @@ public class AdvertisementControllerTest {
     }
 
     private MockHttpServletRequestBuilder buildGetRequest(String id) {
-        return buildGetRequest(id, null);
-    }
-
-    private MockHttpServletRequestBuilder buildGetRequest(String id, String category) {
-        return get(AdvertisementController.PATH + "/" + id + (category == null ? "" : ("?category=" + category)));
+        return get(AdvertisementController.PATH + "/" + id);
     }
 
     private MockHttpServletRequestBuilder buildPutRequest(String id, AdvertisementDto advertisement) throws Exception {
@@ -309,20 +291,15 @@ public class AdvertisementControllerTest {
     }
 
     private AdvertisementDto createAdvertisement(String title) {
-        return createAdvertisement(title, null, "mister.x@acme.com");
+        return createAdvertisement(title, "mister.x@acme.com");
     }
 
-    private AdvertisementDto createAdvertisement(String title, String category) {
-        return createAdvertisement(title, category, "mister.x@acme.com");
-    }
-
-    private AdvertisementDto createAdvertisement(String title, String category, String contact) {
+    private AdvertisementDto createAdvertisement(String title, String contact) {
         AdvertisementDto dto = new AdvertisementDto();
         dto.title = title;
         dto.contact = contact;
         dto.price = new BigDecimal("42.42");
         dto.currency = "EUR";
-        dto.category = category;
         return dto;
     }
 }

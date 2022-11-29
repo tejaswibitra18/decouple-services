@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
@@ -62,14 +61,8 @@ public class AdvertisementController {
     }
 
     @GetMapping
-    public ResponseEntity<AdvertisementListDto> advertisements(
-            @RequestParam(name = "category", required = false) String category) {
-        if (category == null || category.trim().isEmpty()) {
-            return advertisementsForPage(FIRST_PAGE_ID);
-        } else {
-            AdvertisementListDto listDto = toDtoList(repository.findByCategory(category));
-            return new ResponseEntity<>(listDto, HttpStatus.OK);
-        }
+    public ResponseEntity<AdvertisementListDto> advertisements() {
+        return advertisementsForPage(FIRST_PAGE_ID);
     }
 
     @GetMapping("/pages/{pageId}")
@@ -144,7 +137,6 @@ public class AdvertisementController {
 
         dto.id = ad.getId();
         dto.title = ad.getTitle();
-        dto.category = ad.getCategory();
         dto.contact = ad.getContact();
         Double averageRating = reviewsServiceClient.getAverageRating(dto.contact);
         if (averageRating == null) {
@@ -154,7 +146,6 @@ public class AdvertisementController {
         dto.averageContactRating = averageRating;
         dto.price = ad.getPrice();
         dto.currency = ad.getCurrency();
-        dto.purchasedOn = ad.getPurchasedOn();
         dto.reviewsUrl = reviewsServiceHost + "/#/reviews/" + ad.getContact();
 
         dto.metadata.createdAt = Objects.toString(ad.getCreatedAt());
@@ -173,8 +164,6 @@ public class AdvertisementController {
         ad.setContact(dto.contact);
         ad.setPrice(dto.price);
         ad.setCurrency(dto.currency);
-        ad.setPurchasedOn(dto.purchasedOn);
-        ad.setCategory(dto.category);
         return ad;
     }
 }

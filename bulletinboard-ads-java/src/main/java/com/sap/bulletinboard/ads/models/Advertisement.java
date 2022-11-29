@@ -48,12 +48,6 @@ public class Advertisement {
     @Column(name = "currency")
     private String currency;
 
-    @Column(name = "purchasedon")
-    private Instant purchasedOn;
-
-    @Column(name = "category")
-    private String category;
-
     public Advertisement() {
     }
 
@@ -126,22 +120,6 @@ public class Advertisement {
 
     public void setCurrency(String currency) {
         this.currency = currency;
-    }
-
-    public Instant getPurchasedOn() {
-        return purchasedOn;
-    }
-
-    public void setPurchasedOn(Instant purchasedOn) {
-        this.purchasedOn = purchasedOn;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     @Override
