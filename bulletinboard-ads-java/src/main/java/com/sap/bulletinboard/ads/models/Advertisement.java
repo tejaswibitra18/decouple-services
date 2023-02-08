@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "advertisement")
+@Table(name = "ads")
 @SequenceGenerator(name = "advertisement_id_generator", sequenceName = "advertisement_sequence", initialValue = 1,
         allocationSize = 1)
 public class Advertisement {
