@@ -4,7 +4,7 @@ export default function Client () {
   this.getAll = async () => {
     const response = await fetch('./api/v1/ads')
     return (response.status === 200)
-      ? { ads: (await response.json()).value, message: '' }
+      ? { ads: (await response.json()), message: '' }
       : { ads: [], message: await response.text() }
   }
 

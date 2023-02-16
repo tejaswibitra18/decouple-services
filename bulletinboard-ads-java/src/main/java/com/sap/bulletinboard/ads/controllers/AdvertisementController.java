@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
 import com.sap.bulletinboard.ads.controllers.dto.AdvertisementDto;
-import com.sap.bulletinboard.ads.controllers.dto.AdvertisementListDto;
 import com.sap.bulletinboard.ads.controllers.dto.PageHeaderBuilder;
 import com.sap.bulletinboard.ads.models.Advertisement;
 import com.sap.bulletinboard.ads.models.AdvertisementRepository;
@@ -61,18 +60,19 @@ public class AdvertisementController {
     }
 
     @GetMapping
-    public ResponseEntity<AdvertisementListDto> advertisements() {
+    public ResponseEntity<List<AdvertisementDto>> advertisements() {
         return advertisementsForPage(FIRST_PAGE_ID);
     }
 
     @GetMapping("/pages/{pageId}")
-    public ResponseEntity<AdvertisementListDto> advertisementsForPage(@PathVariable("pageId") int pageId) {
+    public ResponseEntity<List<AdvertisementDto>> advertisementsForPage(@PathVariable("pageId") int pageId) {
         Page<Advertisement> page = repository.findAll(PageRequest.of(pageId, DEFAULT_PAGE_SIZE));
-        AdvertisementListDto listDto = toDtoList(page.getContent());
+
+        List<AdvertisementDto> dtos = page.getContent().stream().map(this::entityToDto).collect(Collectors.toList());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.LINK, PageHeaderBuilder.createLinkHeaderString(page, PATH_PAGES));
-        return new ResponseEntity<>(listDto, headers, HttpStatus.OK);
+        return new ResponseEntity<>(dtos, headers, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -109,13 +109,6 @@ public class AdvertisementController {
     @ResponseStatus(NO_CONTENT)
     public void deleteAll() {
         repository.deleteAllInBatch();
-    }
-
-    private AdvertisementListDto toDtoList(List<Advertisement> entities) {
-        List<AdvertisementDto> dtos = entities.stream().map(this::entityToDto).collect(Collectors.toList());
-        AdvertisementListDto listDto = new AdvertisementListDto();
-        listDto.advertisements = dtos;
-        return listDto;
     }
 
     private void throwIfNotExisting(@PathVariable("id") Long id) {

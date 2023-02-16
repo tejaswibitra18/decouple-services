@@ -84,7 +84,7 @@ public class AdvertisementControllerTest {
         mockMvc.perform(buildPostRequest(SOME_TITLE)).andExpect(status().isCreated());
 
         mockMvc.perform(buildGetRequest("")).andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON)).andExpect(jsonPath("$.value", hasSize(3)));
+                .andExpect(content().contentType(APPLICATION_JSON)).andExpect(jsonPath("$", hasSize(3)));
     }
 
     @Test
@@ -193,10 +193,10 @@ public class AdvertisementControllerTest {
 
         mockMvc.perform(buildGetByPageRequest(0)).andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
-                .andExpect(jsonPath("$.value.length()", is(AdvertisementController.DEFAULT_PAGE_SIZE)));
+                .andExpect(jsonPath("$.length()", is(AdvertisementController.DEFAULT_PAGE_SIZE)));
 
         mockMvc.perform(buildGetByPageRequest(1)).andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON)).andExpect(jsonPath("$.value.length()", is(1)));
+                .andExpect(content().contentType(APPLICATION_JSON)).andExpect(jsonPath("$.length()", is(1)));
     }
 
     @Test
