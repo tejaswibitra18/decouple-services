@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -59,17 +60,19 @@ public class AdvertisementController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Advertisement>> advertisements() {
+    public ResponseEntity<List<AdvertisementDto>> advertisements() {
         return advertisementsForPage(FIRST_PAGE_ID);
     }
 
     @GetMapping("/pages/{pageId}")
-    public ResponseEntity<List<Advertisement>> advertisementsForPage(@PathVariable("pageId") int pageId) {
+    public ResponseEntity<List<AdvertisementDto>> advertisementsForPage(@PathVariable("pageId") int pageId) {
         Page<Advertisement> page = repository.findAll(PageRequest.of(pageId, DEFAULT_PAGE_SIZE));
+
+        List<AdvertisementDto> dtos = page.getContent().stream().map(this::entityToDto).collect(Collectors.toList());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.LINK, PageHeaderBuilder.createLinkHeaderString(page, PATH_PAGES));
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(dtos, headers, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
