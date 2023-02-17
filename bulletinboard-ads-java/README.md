@@ -46,7 +46,7 @@ The following endpoints are supported and tested (remember to set the `applicati
             "title": <text>,
             "price": <number>,
             "contact": "<text>",
-            "contactRatingState": <text>, //correlates to the average rating from the reviews service
+            "averageContactRating": <number>, //correlates to the average rating from the reviews service
             "currency": <text>,
             "metadata": {
                 "createdAt": <date>,
@@ -66,7 +66,7 @@ The following endpoints are supported and tested (remember to set the `applicati
         "title": <text>,
         "price": <number>,
         "contact": "<text>",
-        "contactRatingState": <text>, //correlates to the average rating from the reviews service
+        "averageContactRating": <text>, //correlates to the average rating from the reviews service
         "currency": <text>,
         "metadata": {
             "createdAt": <date>,
