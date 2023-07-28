@@ -3,10 +3,10 @@ package com.sap.bulletinboard.ads.models;
 import com.sap.bulletinboard.ads.util.TimeServiceProvider;
 
 import java.time.Instant;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 @Embeddable
 public class EntityMetaData {

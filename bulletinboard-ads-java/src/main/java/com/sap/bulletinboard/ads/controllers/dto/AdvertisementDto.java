@@ -2,8 +2,8 @@ package com.sap.bulletinboard.ads.controllers.dto;
 
 import java.math.BigDecimal;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class AdvertisementDto {
 

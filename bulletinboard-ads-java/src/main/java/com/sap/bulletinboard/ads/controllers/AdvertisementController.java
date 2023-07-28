@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 import com.sap.bulletinboard.ads.controllers.dto.AdvertisementDto;
 import com.sap.bulletinboard.ads.controllers.dto.PageHeaderBuilder;
