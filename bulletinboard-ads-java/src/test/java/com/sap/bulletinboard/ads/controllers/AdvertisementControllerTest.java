@@ -83,7 +83,7 @@ public class AdvertisementControllerTest {
         mockMvc.perform(buildPostRequest(SOME_TITLE)).andExpect(status().isCreated());
         mockMvc.perform(buildPostRequest(SOME_TITLE)).andExpect(status().isCreated());
 
-        mockMvc.perform(buildGetRequest("")).andExpect(status().isOk())
+        mockMvc.perform(buildGetAllRequest()).andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON)).andExpect(jsonPath("$", hasSize(3)));
     }
 
@@ -167,7 +167,7 @@ public class AdvertisementControllerTest {
     @Test
     public void deleteAll() throws Exception {
         String id = performPostAndGetId();
-        mockMvc.perform(buildDeleteRequest("")).andExpect(status().isNoContent());
+        mockMvc.perform(buildDeleteAllRequest()).andExpect(status().isNoContent());
         mockMvc.perform(buildGetRequest(id)).andExpect(status().isNotFound());
     }
 
@@ -185,7 +185,7 @@ public class AdvertisementControllerTest {
     public void readAdsFromSeveralPages() throws Exception {
         int adsCount = AdvertisementController.DEFAULT_PAGE_SIZE + 1;
 
-        mockMvc.perform(buildDeleteRequest("")).andExpect(status().isNoContent());
+        mockMvc.perform(buildDeleteAllRequest()).andExpect(status().isNoContent());
 
         for (int i = 0; i < adsCount; i++) {
             mockMvc.perform(buildPostRequest(SOME_TITLE)).andExpect(status().isCreated());
@@ -203,7 +203,7 @@ public class AdvertisementControllerTest {
     public void navigatePages() throws Exception {
         int adsCount = (AdvertisementController.DEFAULT_PAGE_SIZE * 2) + 1;
 
-        mockMvc.perform(buildDeleteRequest("")).andExpect(status().isNoContent());
+        mockMvc.perform(buildDeleteAllRequest()).andExpect(status().isNoContent());
 
         for (int i = 0; i < adsCount; i++) {
             mockMvc.perform(buildPostRequest(SOME_TITLE)).andExpect(status().isCreated());
@@ -247,6 +247,10 @@ public class AdvertisementControllerTest {
         MockHttpServletResponse response = mockMvc.perform(buildPostRequest(SOME_TITLE)).andExpect(status().isCreated())
                 .andReturn().getResponse();
         return getIdFromLocation(response.getHeader(LOCATION));
+    }
+
+    private MockHttpServletRequestBuilder buildGetAllRequest() {
+        return get(AdvertisementController.PATH);
     }
 
     private MockHttpServletRequestBuilder buildGetRequest(String id) {

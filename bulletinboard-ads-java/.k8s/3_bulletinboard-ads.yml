@@ -30,7 +30,7 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               value: topsekret
             - name: REVIEWS_HOST
-              value: https://rws.ingress.<CLUSTER>.<PROJECT>.shoot.canary.k8s-hana.ondemand.com/
+              value: https://rws.ingress.<CLUSTER>.<PROJECT>.shoot.canary.k8s-hana.ondemand.com
             - name: REVIEWS_HOST_INTERNAL
               value: http://bulletinboard-reviews:9090
 ---
