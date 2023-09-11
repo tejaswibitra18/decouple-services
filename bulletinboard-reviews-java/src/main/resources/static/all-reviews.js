@@ -30,7 +30,7 @@ export default function Reviews (props) {
   const [state, setState] = useState({ reviews: [], message: '', newReview: {} })
 
   const loadReviews = async () => {
-    const reviewsResponse = await props.client.get('')
+    const reviewsResponse = await props.client.getAll()
     setState(oldState => ({ ...oldState, ...reviewsResponse }))
   }
   useEffect(loadReviews, [])
