@@ -1,6 +1,14 @@
 'use strict'
 
 export default function Client () {
+
+  this.getAll = async () => {
+    const response = await fetch(`./api/v1/reviews`)
+    return (response.status === 200)
+      ? { reviews: await response.json(), message: '' }
+      : { reviews: [], message: await response.text() }
+  }
+
   this.get = async (contact) => {
     const response = await fetch(`./api/v1/reviews/${contact}`)
     return (response.status === 200)
