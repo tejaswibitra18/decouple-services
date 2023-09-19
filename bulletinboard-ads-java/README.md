@@ -1,7 +1,7 @@
 # bulletinboard-ads
 This is the **Spring Boot** version of the advertisements-service for the bulletin board application.
 Advertisements can be created, deleted and viewed.
-You can interact with the service using a REST client like Postman or the GUI.
+You can interact with the service using a REST client like cURL or the GUI.
 
 ## Ad-Blocker
 **If the UI does not load, please make sure your ad-blocker is not accidentially blocking parts of the application ;-)**
