@@ -30,7 +30,7 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               value: topsekret
             - name: REVIEWS_HOST
-              value: https://rws.ingress.<CLUSTER>.<PROJECT>.shoot.canary.k8s-hana.ondemand.com
+              value: https://bulletinboard-reviews.<SUBDOMAIN>.kyma.ondemand.com
             - name: REVIEWS_HOST_INTERNAL
               value: http://bulletinboard-reviews:9090
 ---
@@ -47,33 +47,26 @@ spec:
       targetPort: 8080
   type: ClusterIP
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: gateway.kyma-project.io/v1beta1
+kind: APIRule
 metadata:
-  annotations:
-    cert.gardener.cloud/purpose: managed
   name: bulletinboard-ads
-spec:
-  rules:
-    - host: ads.ingress.<CLUSTER>.<PROJECT>.shoot.canary.k8s-hana.ondemand.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: bulletinboard-ads
-                port:
-                  number: 8080
-  tls:
-    - hosts:
-        - ads.ingress.<CLUSTER>.<PROJECT>.shoot.canary.k8s-hana.ondemand.com
-      secretName: ads-cert
----
-apiVersion: cert.gardener.cloud/v1alpha1
-kind: Certificate
-metadata:
-  name: ads-cert
   namespace: default
 spec:
-  commonName: ads.ingress.<CLUSTER>.<PROJECT>.shoot.canary.k8s-hana.ondemand.com
+  gateway: kyma-system/kyma-gateway
+  host: bulletinboard-ads.<SUBDOMAIN>.kyma.ondemand.com
+  rules:
+    - path: /.*
+      methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+      service:
+        name: bulletinboard-ads
+        port: 8080
+      accessStrategies:
+        - handler: allow
+  service:
+    name: bulletinboard-ads
+    port: 80
