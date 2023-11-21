@@ -99,7 +99,7 @@ public class AdvertisementControllerTest {
 
     @Test
     public void createNullTitle() throws Exception {
-        mockMvc.perform(buildPostRequest(null)).andExpect(status().isBadRequest());
+        mockMvc.perform(buildPostRequest((String)null)).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -111,6 +111,28 @@ public class AdvertisementControllerTest {
     public void createWithNoContent() throws Exception {
         mockMvc.perform(post(AdvertisementController.PATH).contentType(APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void createBlankContact() throws Exception {
+
+        final AdvertisementDto adsDto = createAdvertisement(SOME_TITLE, null);
+        mockMvc.perform(buildPostRequest(adsDto)).andExpect(status().isBadRequest());
+   }
+
+    @Test
+    public void createInvalidContact() throws Exception {
+
+        final AdvertisementDto adsDto = createAdvertisement(SOME_TITLE, "NotAnEmailAddress");
+        mockMvc.perform(buildPostRequest(adsDto)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void createComplexContactEmail() throws Exception {
+
+        final AdvertisementDto adsDto = createAdvertisement(SOME_TITLE,
+                "jöhn.doe+abc1234567890!@example-company-name.co.uk");
+        mockMvc.perform(buildPostRequest(adsDto)).andExpect(status().isCreated());
     }
 
     @Test
@@ -241,6 +263,10 @@ public class AdvertisementControllerTest {
     private MockHttpServletRequestBuilder buildPostRequest(String adsTitle) throws Exception {
         AdvertisementDto advertisement = createAdvertisement(adsTitle);
         return post(AdvertisementController.PATH).content(toJson(advertisement)).contentType(APPLICATION_JSON);
+    }
+
+    private MockHttpServletRequestBuilder buildPostRequest(AdvertisementDto adsDto) throws Exception {
+        return post(AdvertisementController.PATH).content(toJson(adsDto)).contentType(APPLICATION_JSON);
     }
 
     private String performPostAndGetId() throws Exception {
