@@ -9,4 +9,4 @@ docker run \
       -v bb_ads_local_java:/var/lib/postgresql/data \
       --name postgres-bulletinboard-ads \
       -p 5432:5432 \
-      postgres:12-alpine
+      postgres:14-alpine
