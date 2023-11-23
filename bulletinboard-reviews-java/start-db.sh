@@ -9,4 +9,4 @@ docker run \
       -v bb_reviews_local_java:/var/lib/postgresql/data \
       --name postgres-bulletinboard-reviews \
       -p 6543:5432 \
-      postgres:12-alpine
+      postgres:14-alpine
