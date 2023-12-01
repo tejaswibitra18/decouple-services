@@ -48,8 +48,8 @@ const AdCard = function (props) {
           <ui5-input disabled=${!props.isEdit} value=${props.ad.currency} oninput=${setCurrency} />
         </div>
         <div style='margin: 1rem; display: grid;'>
-          <ui5-label required>Contact</ui5-label>
-          <ui5-input disabled=${!props.isEdit} value=${props.ad.contact} oninput=${setContact} />
+        <ui5-label required>Contact Email</ui5-label>
+        <ui5-input disabled=${!props.isCreate} valueState=${props.emailErrorState} value=${props.ad.contact} oninput=${setContact} />
         </div>
         ${rating}
       </div>
@@ -57,8 +57,8 @@ const AdCard = function (props) {
     `
 }
 
-export default function AdDetails (props) {
-  const [state, setState] = useState({ ad: { title: '', price: '', currency: '', contact: '' }, initialAd: {}, isEdit: false, message: '' })
+export default function AdDetails(props) {
+  const [state, setState] = useState({ ad: { title: '', price: '', currency: '', contact: '' }, initialAd: {}, isEdit: false, message: '', emailErrorState: 'None' })
 
   useEffect(async () => {
     if (!props.isCreate) {
@@ -95,11 +95,27 @@ export default function AdDetails (props) {
   }
 
   const save = async () => {
-    const message = props.isCreate ? await props.client.create(state.ad) : await props.client.update(state.ad)
-    setState(oldState => ({ ...oldState, message }))
-    if (!message) {
-      location.hash = '#/'
+    const matches = state.ad.contact.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+    if (!matches) {
+      setState(oldState => ({ ...oldState, emailErrorState: 'Error' }))
+      return
+    } else {
+      setState(oldState => ({ ...oldState, emailErrorState: 'None' }))
+      const message = props.isCreate ? await props.client.create(state.ad) : await props.client.update(state.ad)
+      setState(oldState => ({ ...oldState, message }))
+      if (!message) {
+        location.hash = '#/'
+      }
     }
+  }
+
+  const example = () => {
+    updateAd({
+      title: 'New Bicycle',
+      price: 2999.99,
+      currency: 'USD',
+      contact: 'john@example.com'
+    })
   }
 
   const message = state.message
@@ -108,6 +124,7 @@ export default function AdDetails (props) {
 
   const buttons = state.isEdit
     ? html`
+      <ui5-button onclick=${example} icon='create' slot='endContent' />
       <ui5-button onclick=${save} icon='save' slot='endContent' />
       <ui5-button onclick=${cancel} icon='cancel' design='Negative' slot='endContent' />`
     : html`
@@ -118,7 +135,7 @@ export default function AdDetails (props) {
     <ui5-page style='height: 100vh;' floating-footer show-footer>
       <${AdsHeader} slot='header' />
       ${message}
-      <${AdCard} ad=${state.ad} onUpdateAd=${updateAd} isEdit=${state.isEdit} />
+      <${AdCard} ad=${state.ad} emailErrorState=${state.emailErrorState} onUpdateAd=${updateAd} isEdit=${state.isEdit} />
       <ui5-bar slot='footer' design='FloatingFooter'>${buttons}</ui5-bar>
     </ui5-page>
   `
