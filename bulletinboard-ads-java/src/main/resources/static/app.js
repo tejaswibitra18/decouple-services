@@ -6,7 +6,7 @@ import AdDetails from './ad-details.js'
 
 // FIXME changing the hash directly when already on the details view will not load the data of the new ad
 const App = function (props) {
-  const [state, setState] = useState({ adId: '', isCreate: false })
+  const [state, setState] = useState({ isCreate: false })
 
   useEffect(() => {
     setStateFromUrl()
@@ -15,15 +15,19 @@ const App = function (props) {
   }, [])
 
   const setStateFromUrl = () => {
-    const indexShow = location.hash.indexOf('#/show/')
-    const adId = (indexShow > -1) ? location.hash.substring(indexShow + 7) : ''
     const isCreate = location.hash.indexOf('#/new') > -1
-    setState({ adId, isCreate })
+    setState({ isCreate })
   }
 
-  const showDetails = state.adId || state.isCreate
+  const getAdId = () => {
+    const indexShow = location.hash.indexOf('#/show/')
+    return (indexShow > -1) ? location.hash.substring(indexShow + 7) : ''
+  }
+
+  const adId = getAdId()
+  const showDetails = adId || state.isCreate
   return showDetails
-    ? html`<${AdDetails} client=${props.client} adId=${state.adId} isCreate=${state.isCreate} />`
+    ? html`<${AdDetails} client=${props.client} adId=${adId} isCreate=${state.isCreate} />`
     : html`<${AdsOverview} client=${props.client} />`
 }
 

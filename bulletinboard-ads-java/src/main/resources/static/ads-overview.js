@@ -53,7 +53,7 @@ export default function AdsOverview (props) {
     <ui5-page style='height: 100vh;' floating-footer show-footer>
       <${AdsHeader} slot='header' />
       ${message}
-      <div style='display: flex; justify-content: center; margin-top: 1rem;'>
+      <div style='display: flex; justify-content: center; flex-wrap: wrap; margin-top: 1rem;'>
         ${ads}
       </div>
       <ui5-bar slot='footer' design='FloatingFooter'>
