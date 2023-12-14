@@ -11,8 +11,8 @@ const NewReviewForm = function (props) {
   return html`
     <section>
       <div style='display: grid; margin: 1rem;'>
-        <ui5-label required>Reviewer:</ui5-label>
-        <ui5-input oninput=${setReviewer}>${props.review.reviewerEmail}</ui5-input>
+      <ui5-label required>Reviewer Email:</ui5-label>
+      <ui5-input oninput=${setReviewer} value=${props.review.reviewerEmail} valueState=${props.review.reviewerErrorState}></ui5-input>
       </div>
       <div style='display: grid; margin: 1rem;'>
         <ui5-label required>Comment:</ui5-label>
@@ -47,8 +47,10 @@ const Review = function (props) {
 }
 
 // REVISE this needs revision, find a way to cleanly separate the entire dialog
-export default function ContactReviewss (props) {
-  const [state, setState] = useState({ reviews: [], message: '', newReview: {}, messageFromCreation: '' })
+export default function ContactReviews(props) {
+  const newReview = () => ({ revieweeEmail: props.contact, reviewerEmail: '', comment: '', rating: 0, reviewerErrorState: '' })
+
+  const [state, setState] = useState({ reviews: [], message: '', newReview: newReview(), messageFromCreation: '' })
   const dialog = useRef({})
 
   const loadReviews = async () => {
@@ -83,15 +85,23 @@ export default function ContactReviewss (props) {
       </ui5-message-strip>`
     : ''
   const updateNewReview = (newReview) => { setState(oldState => ({ ...oldState, newReview })) }
+
   const saveNewReview = async () => {
-    const messageFromCreation = await props.client.create(state.newReview)
-    if (messageFromCreation) {
-      setState(oldState => ({ ...oldState, messageFromCreation }))
+    const matches = state.newReview.reviewerEmail.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+    if (!matches) {
+      setState(oldState => ({ ...oldState, newReview: { ...oldState.newReview, reviewerErrorState: "Error" } }))
+      return
     } else {
-      await loadReviews()
-      dialog.current.close()
+      setState(oldState => ({ ...oldState, newReview: { ...oldState.newReview, reviewerErrorState: "None" } }))
+      const createReviewResponse = await props.client.create(state.newReview)
+      setState(oldState => ({ ...oldState, messageFromCreation: createReviewResponse.message }))
+      if (!createReviewResponse.message) {
+        await loadReviews()
+        dialog.current.close()
+      }
     }
   }
+
   const dialogHtml = html`
     <ui5-dialog ref=${dialog} header-text='New Review for ${props.contact}'>
       ${messageFromCreation}
