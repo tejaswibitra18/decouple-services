@@ -49,7 +49,7 @@ const AdCard = function (props) {
         </div>
         <div style='margin: 1rem; display: grid;'>
         <ui5-label required>Contact Email</ui5-label>
-        <ui5-input disabled=${!props.isCreate} valueState=${props.emailErrorState} value=${props.ad.contact} oninput=${setContact} />
+        <ui5-input disabled=${!props.isEdit} valueState=${props.emailErrorState} value=${props.ad.contact} oninput=${setContact} />
         </div>
         ${rating}
       </div>
@@ -122,9 +122,13 @@ export default function AdDetails(props) {
     ? html`<ui5-message-strip onclose=${clearMessage} design='Negative' style='margin-top: 1rem;'>${state.message}</ui5-message-strip>`
     : ''
 
+  const exampleBtn = props.isCreate
+    ? html`<ui5-button onclick=${example} icon='create' slot='endContent' />`
+    : ''
+
   const buttons = state.isEdit
     ? html`
-      <ui5-button onclick=${example} icon='create' slot='endContent' />
+      ${exampleBtn}
       <ui5-button onclick=${save} icon='save' slot='endContent' />
       <ui5-button onclick=${cancel} icon='cancel' design='Negative' slot='endContent' />`
     : html`
