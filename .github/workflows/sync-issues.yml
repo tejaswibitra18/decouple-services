@@ -1,0 +1,17 @@
+name: Sync Issues to Projects
+
+on:
+  issues:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  sync-to-projects:
+    runs-on: solinas
+    steps:
+      - name: Add Issue to Project
+        uses: actions/add-to-project@v0.5.0
+        with:
+          project-url: https://github.tools.sap/orgs/cloud-curriculum/projects/1
+          github-token: '${{ secrets.SYNC_TO_PROJECT }}'
