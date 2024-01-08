@@ -11,6 +11,7 @@ jobs:
     runs-on: solinas
     steps:
       - name: Add Issue to Project
+        id: add-issue
         uses: actions/add-to-project@v0.5.0
         with:
           project-url: https://github.tools.sap/orgs/cloud-curriculum/projects/1
