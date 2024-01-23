@@ -1,6 +1,6 @@
 'use strict'
 
-import { html, useState, useEffect } from 'https://unpkg.com/htm@3.1.0/preact/standalone.module.js'
+import { html, useState, useEffect } from './webjars/htm/3.1.1/preact/standalone.module.js'
 import AdsHeader from './ads-header.js'
 
 const AdsCard = function (props) {
