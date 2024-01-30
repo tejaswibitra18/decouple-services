@@ -1,6 +1,6 @@
 'use strict'
 
-import { html } from 'https://unpkg.com/htm@3.1.0/preact/standalone.module.js'
+import { html } from './webjars/htm/3.1.1/preact/standalone.module.js'
 
 export default function AdsHeader () {
   const navToOverview = () => {

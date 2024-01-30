@@ -1,6 +1,6 @@
 'use strict'
 
-import { html, useState, useEffect, useRef } from 'https://unpkg.com/htm@3.1.0/preact/standalone.module.js'
+import { html, useState, useEffect, useRef } from './webjars/htm/3.1.1/preact/standalone.module.js'
 import ReviewsHeader from './reviews-header.js'
 
 const NewReviewForm = function (props) {
