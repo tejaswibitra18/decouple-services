@@ -1,7 +1,7 @@
 # bulletinboard-reviews
 This is the **SpringBoot** version of the reviews-service for the bulletin board application.
 Reviews of users can be created, deleted and viewed.
-You can interact with the service using a REST client like Insomnia, cURL or the GUI.
+You can interact with the service using a REST client like Bruno, cURL or the GUI.
 
 **Note:** Reviews refer to the _users_ that advertize things, _not_ the advertised things.
 
