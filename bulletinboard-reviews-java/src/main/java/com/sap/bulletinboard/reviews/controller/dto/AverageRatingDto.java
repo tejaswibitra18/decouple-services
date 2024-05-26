@@ -1,7 +1,9 @@
 package com.sap.bulletinboard.reviews.controller.dto;
 
 public class AverageRatingDto {
-    Number averageRating;
+    private Number averageRating;
+    private String reviweeEmail;
+
 
     public AverageRatingDto() {
     }
@@ -16,5 +18,13 @@ public class AverageRatingDto {
 
     public void setAverageRating(Number averageRating) {
         this.averageRating = averageRating;
+    }
+
+    public String getReviweeEmail() {
+        return reviweeEmail;
+    }
+
+    public void setReviweeEmail(String reviweeEmail) {
+        this.reviweeEmail = reviweeEmail;
     }
 }

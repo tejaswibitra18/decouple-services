@@ -14,3 +14,11 @@ CREATE TABLE public.ads (
 	version int8 NULL,
 	PRIMARY KEY (id)
 );
+
+--changeset cloud-native:create-reviews-table
+CREATE TABLE public.ads_reviewer (
+	reviwee_email varchar(255) NOT NULL,
+	average_rating float,
+	PRIMARY KEY (reviwee_email)
+);
+

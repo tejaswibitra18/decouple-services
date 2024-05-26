@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 public class MockReviewsServiceClient implements ReviewsServiceClient{
 
 	@Override
-	public Double getAverageRating(String userEmail) {
-		return 0d;
+	public float getAverageRating(String userEmail) {
+		return 0;
 	}
 
 }

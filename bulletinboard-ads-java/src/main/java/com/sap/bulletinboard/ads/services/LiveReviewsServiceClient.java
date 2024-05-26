@@ -1,5 +1,6 @@
 package com.sap.bulletinboard.ads.services;
 
+import com.sap.bulletinboard.ads.models.AverageRating;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -26,7 +27,7 @@ public class LiveReviewsServiceClient implements ReviewsServiceClient {
     }
 
     @Override
-    public Double getAverageRating(String userEmail) {
+    public float getAverageRating(String userEmail) {
 	String url = determineHost() + "/" + API_PATH + "/averageRatings/" + userEmail;
 
 	AverageRating review = webClient.get().uri(url).retrieve().bodyToMono(AverageRating.class).block();

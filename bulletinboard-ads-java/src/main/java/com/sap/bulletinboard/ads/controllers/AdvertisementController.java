@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.sap.bulletinboard.ads.models.AverageRating;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 
@@ -15,6 +16,8 @@ import com.sap.bulletinboard.ads.models.Advertisement;
 import com.sap.bulletinboard.ads.models.AdvertisementRepository;
 import com.sap.bulletinboard.ads.services.ReviewsServiceClient;
 
+import com.sap.bulletinboard.ads.models.AdReviewerRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,10 +57,12 @@ public class AdvertisementController {
 
     private final AdvertisementRepository repository;
     private final ReviewsServiceClient reviewsServiceClient;
+    private final AdReviewerRepository adReviewerRepository;
 
-    public AdvertisementController(AdvertisementRepository repository, ReviewsServiceClient reviewsServiceClient) {
+    public AdvertisementController(AdvertisementRepository repository, ReviewsServiceClient reviewsServiceClient, AdReviewerRepository adReviewerRepository) {
         this.repository = repository;
         this.reviewsServiceClient = reviewsServiceClient;
+        this.adReviewerRepository = adReviewerRepository;
     }
 
     @GetMapping
@@ -131,10 +137,14 @@ public class AdvertisementController {
         dto.id = ad.getId();
         dto.title = ad.getTitle();
         dto.contact = ad.getContact();
-        Double averageRating = reviewsServiceClient.getAverageRating(dto.contact);
-        if (averageRating == null) {
-            averageRating = 1d;
+        float averageRating = 0;
+        var averageRatingOptional = adReviewerRepository.findById(ad.getContact());
+        if (averageRatingOptional.isEmpty()) {
+            averageRating = 1;
             logger.info("User does not have a rating yet, defaulting to 1 (=untrusted)");
+        }
+        else{
+            averageRating = averageRatingOptional.get().getAverageRating();
         }
         dto.averageContactRating = averageRating;
         dto.price = ad.getPrice();
@@ -158,5 +168,12 @@ public class AdvertisementController {
         ad.setPrice(dto.price);
         ad.setCurrency(dto.currency);
         return ad;
+    }
+
+    @KafkaListener(topics = "UpdateAvgRating", containerFactory = "kafkaListenerContainerFactory")
+    public void listenGroupFoo(AverageRating message)  {
+        System.out.println("Received Message in group my-group-id: " + message.getReviweeEmail());
+        System.out.println("Received Message in group my-group-id: " + message.getAverageRating());
+        adReviewerRepository.save(message);
     }
 }
